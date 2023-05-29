@@ -1,5 +1,6 @@
 const express = require("express");
 const session = require("express-session");
+const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 const usermodel = require("./model")
@@ -72,10 +73,8 @@ app.get("/success", async (req, res) => {
         email: emails[0].value,
         photo: photos[0].value,
     })
-
-
-    res.redirect("/success")
-
+    const token = await jwt.sign({ user_id: newUser.id }, "secret")
+    res.json({ token: token })
 });
 
 
